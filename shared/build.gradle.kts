@@ -27,10 +27,14 @@ kotlin {
             isStatic = true
         }
     }
-    
+
+    val ktor_version: String by project
+
     sourceSets {
         commonMain.dependencies {
             //put your multiplatform dependencies here
+            implementation("io.ktor:ktor-client-core:$ktor_version")
+            implementation("io.ktor:ktor-client-cio:$ktor_version")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
