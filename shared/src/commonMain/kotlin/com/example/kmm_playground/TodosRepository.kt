@@ -4,11 +4,13 @@ import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.get
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TodosRepository {
     private val client = HttpClient(CIO)
-    suspend fun listTodos(): String {
+    fun listTodos(): Flow<String> = flow {
         val response = client.get("https://jsonplaceholder.typicode.com/todos")
-        return response.body<String>()
+        emit(response.body<String>())
     }
 }

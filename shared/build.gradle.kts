@@ -28,13 +28,11 @@ kotlin {
         }
     }
 
-    val ktorVersion: String by project
-
     sourceSets {
         commonMain.dependencies {
             //put your multiplatform dependencies here
-            implementation("io.ktor:ktor-client-core:$ktorVersion")
-            implementation("io.ktor:ktor-client-cio:$ktorVersion")
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
