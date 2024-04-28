@@ -20,8 +20,10 @@ class TodosRepository {
     }
 
     fun listTodos(): Flow<List<Todo>> = flow {
-        val response = client.get("https://jsonplaceholder.typicode.com/todos")
+        val response = client.get("$BASE_URL/users/1/todos")
         val jsonArray = response.body<List<Todo>>()
         emit(jsonArray)
     }
 }
+
+const val BASE_URL = "https://jsonplaceholder.typicode.com"
