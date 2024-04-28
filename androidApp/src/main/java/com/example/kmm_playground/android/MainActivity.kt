@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,7 +44,7 @@ class MainActivity : ComponentActivity() {
 fun TodoList(viewModel: MainViewModel = viewModel()) {
     val todos by viewModel.unCheckedTodos.collectAsState(initial = emptyList())
     val checkedIds by viewModel.checkedIds.collectAsState(initial = emptyList())
-    return LazyColumn {
+    LazyColumn {
         items(todos.size) { index ->
             val todo = todos[index]
             TodoListTile(todo, !checkedIds.contains(todo.id))
@@ -56,14 +54,14 @@ fun TodoList(viewModel: MainViewModel = viewModel()) {
 
 @Composable
 fun TodoListTile(todo: Todo, isVisible: Boolean, viewModel: MainViewModel = viewModel()) {
-    return AnimatedVisibility(
+    AnimatedVisibility(
         visible = isVisible,
-        enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
-        exit = fadeOut() + shrinkVertically(
+        enter = expandVertically(expandFrom = Alignment.Top),
+        exit = shrinkVertically(
             shrinkTowards = Alignment.Top,
             animationSpec = tween(
-                500,
                 200,
+                500,
             ),
         )
     ) {
@@ -81,7 +79,7 @@ fun TodoListTile(todo: Todo, isVisible: Boolean, viewModel: MainViewModel = view
 @Composable
 fun TodoCheckButton(id: Int, viewModel: MainViewModel = viewModel()) {
     val checkedIds by viewModel.checkedIds.collectAsState(initial = emptyList())
-    return CheckButton(
+    CheckButton(
         onClick = {
             viewModel.check(id)
         }, checked = checkedIds.contains(id)
