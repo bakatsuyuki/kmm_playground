@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CheckButton(
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Log.d("MainActivity", "Checked: $checked")
@@ -33,31 +32,26 @@ fun CheckButton(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .clickable(
-                onClick = { onCheckedChange(!checked) },
+                onClick = { onClick() },
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             )
-            .padding(4.dp)
+            .padding(12.dp)
     ) {
-        IconButton(
-            onClick = { onCheckedChange(!checked) }
-        ) {
-            if (checked) {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = "Checked",
-                    tint = MaterialTheme.colorScheme.primary
+        if (checked) {
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = "Checked",
+                tint = MaterialTheme.colorScheme.primary
+            )
+        } else {
+            Canvas(modifier = Modifier.size(20.dp)) {
+                drawCircle(
+                    color = Color.LightGray,
+                    radius = size.minDimension / 2,
+                    style = Stroke(width = 2.dp.toPx())  // 単なる線として円を描画
                 )
-            } else {
-                Canvas(modifier = Modifier.size(20.dp)) {
-                    drawCircle(
-                        color = Color.LightGray,
-                        radius = size.minDimension / 2,
-                        style = Stroke(width = 2.dp.toPx())  // 単なる線として円を描画
-                    )
-                }
             }
-
         }
     }
 }
@@ -66,6 +60,6 @@ fun CheckButton(
 @Composable
 fun PreviewCheckButton() {
     Surface {
-        CheckButton(checked = false, onCheckedChange = {})
+        CheckButton(checked = false, onClick = {})
     }
 }

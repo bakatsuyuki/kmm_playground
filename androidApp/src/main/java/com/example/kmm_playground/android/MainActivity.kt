@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TodoList(viewModel: MainViewModel = viewModel()) {
-    val todos by viewModel.todos.collectAsState()
+    val todos by viewModel.unCheckedTodos.collectAsState(initial = emptyList())
     return LazyColumn {
         items(todos.size) { index ->
             TodoListTile(todos[index])
@@ -55,7 +55,7 @@ fun TodoListTile(todo: Todo) {
         ),
     ) {
         CheckButton(
-            onCheckedChange = { Log.d("MainActivity", "Checked: $it") },
+            onClick = { Log.d("MainActivity", "Checked") },
             checked = todo.completed,
         )
         Text(
