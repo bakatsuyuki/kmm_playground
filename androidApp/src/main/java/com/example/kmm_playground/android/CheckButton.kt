@@ -22,32 +22,35 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CheckButton(
-    checked: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    checked: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
+        contentAlignment = Alignment.Center, modifier = modifier
             .clickable(
                 onClick = { onClick() },
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
             )
-            .padding(12.dp)
+            .padding(8.dp)
     ) {
+        val contentSize = 28.dp
         if (checked) {
             Icon(
                 imageVector = Icons.Filled.Check,
                 contentDescription = "Checked",
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(contentSize),
             )
         } else {
-            Canvas(modifier = Modifier.size(20.dp)) {
+            Canvas(
+                modifier = Modifier
+                    .size(contentSize)
+                    .padding(4.dp)
+            ) {
                 drawCircle(
                     color = Color.LightGray,
                     radius = size.minDimension / 2,
-                    style = Stroke(width = 2.dp.toPx())  // 単なる線として円を描画
+                    style = Stroke(width = 2.dp.toPx())
                 )
             }
         }
