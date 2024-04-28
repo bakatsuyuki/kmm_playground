@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingView(viewModel: MainViewModel = viewModel()) {
     val todos by viewModel.todos.collectAsState()
-    Text(text = todos)
+    Text(text = todos.toString())
 }
 
 @Preview
