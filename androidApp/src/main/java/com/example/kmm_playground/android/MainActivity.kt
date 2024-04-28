@@ -58,7 +58,6 @@ fun TodoList(viewModel: MainViewModel = viewModel()) {
 fun TodoListTile(todo: Todo, isVisible: Boolean, viewModel: MainViewModel = viewModel()) {
     return AnimatedVisibility(
         visible = isVisible,
-        // Additional enter and exit animations can be defined here
         enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
         exit = fadeOut() + shrinkVertically(
             shrinkTowards = Alignment.Top,
