@@ -17,11 +17,7 @@ import kotlin.test.assertEquals
 
 
 class MainViewModelTest {
-    private val uncompletedTodo = Todo(1, 3, "Buy milk", false)
-    private val completedTodo = Todo(2, 4, "Take dog for a walk", true)
-    private val todosList = listOf(uncompletedTodo, completedTodo)
-
-    private lateinit var viewModel: MainViewModel
+    private lateinit var listTodos: (() -> List<Todo>)
     private lateinit var repository: TodosRepository
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -32,8 +28,8 @@ class MainViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         repository = mockk()
-        coEvery { repository.listTodos() } returns flow { emit(todosList) }
-        viewModel = MainViewModel(repository)
+        listTodos = { listOf() }
+        coEvery { repository.listTodos() } returns flow { emit(listTodos.invoke()) }
     }
 
     @After
@@ -44,11 +40,18 @@ class MainViewModelTest {
 
     @Test
     fun initTest() = runTest {
+        val uncompletedTodo = Todo(1, 3, "Buy milk", false)
+        val completedTodo = Todo(2, 4, "Take dog for a walk", true)
+        val todosList = listOf(uncompletedTodo, completedTodo)
+        listTodos = { todosList }
+
+        val viewModel = MainViewModel(repository)
         assertEquals(listOf(uncompletedTodo), viewModel.unCheckedTodos.first())
     }
 
     @Test
     fun checkTest(): Unit = runTest {
+        val viewModel = MainViewModel(repository)
         // check 1
         viewModel.check(1)
         assertEquals(setOf(1), viewModel.checkedIds.value)
