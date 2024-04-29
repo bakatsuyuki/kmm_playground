@@ -21,19 +21,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kmm_playground.MainViewModel
 import com.example.kmm_playground.Todo
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel: MainViewModel by viewModel()
         setContent {
             MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TodoList()
+                    TodoList(viewModel)
                 }
             }
         }
@@ -41,19 +43,19 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TodoList(viewModel: MainViewModel = viewModel()) {
+fun TodoList(viewModel: MainViewModel) {
     val todos by viewModel.unCheckedTodos.collectAsState(initial = emptyList())
     val checkedIds by viewModel.checkedIds.collectAsState(initial = emptyList())
     LazyColumn {
         items(todos.size) { index ->
             val todo = todos[index]
-            TodoListTile(todo, !checkedIds.contains(todo.id))
+            TodoListTile(todo, !checkedIds.contains(todo.id), viewModel)
         }
     }
 }
 
 @Composable
-fun TodoListTile(todo: Todo, isVisible: Boolean, viewModel: MainViewModel = viewModel()) {
+fun TodoListTile(todo: Todo, isVisible: Boolean, viewModel: MainViewModel) {
     AnimatedVisibility(
         visible = isVisible,
         enter = expandVertically(expandFrom = Alignment.Top),
@@ -77,7 +79,7 @@ fun TodoListTile(todo: Todo, isVisible: Boolean, viewModel: MainViewModel = view
 }
 
 @Composable
-fun TodoCheckButton(id: Int, viewModel: MainViewModel = viewModel()) {
+fun TodoCheckButton(id: Int, viewModel: MainViewModel) {
     val checkedIds by viewModel.checkedIds.collectAsState(initial = emptyList())
     CheckButton(
         onClick = {
@@ -90,6 +92,6 @@ fun TodoCheckButton(id: Int, viewModel: MainViewModel = viewModel()) {
 @Composable
 fun DefaultPreview() {
     MyApplicationTheme {
-        TodoList()
+
     }
 }
