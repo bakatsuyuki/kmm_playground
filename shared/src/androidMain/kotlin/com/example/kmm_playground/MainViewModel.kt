@@ -20,7 +20,7 @@ class MainViewModel(private val repository: TodosRepository) : ViewModel() {
 
     private fun loadTodos() {
         viewModelScope.launch {
-            repository?.listTodos()?.collect {
+            repository.listTodos().collect {
                 _todos.value = it
             }
         }
